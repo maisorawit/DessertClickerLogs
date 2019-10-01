@@ -28,6 +28,10 @@ import androidx.databinding.DataBindingUtil
 import com.example.android.dessertclicker.databinding.ActivityMainBinding
 import timber.log.Timber
 
+const val KEY_REVENUE = "revenue_key"
+const val KEY_DESSERT_SOLD = "dessert_sold_key"
+const val KEY_TIMER_SECONDS = "timer_seconds_key"
+
 class MainActivity : AppCompatActivity() {
 
     private var revenue = 0
@@ -67,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dessertTimer = DessertTimer()
+        dessertTimer = DessertTimer(this.lifecycle)
         Timber.i("onCreate called")
 
         // Use Data Binding to get reference to the views
@@ -155,7 +159,6 @@ class MainActivity : AppCompatActivity() {
     /** Lifecycle Methods **/
     override fun onStart() {
         super.onStart()
-        dessertTimer.startTimer()
         Timber.i("onStart called")
     }
 
@@ -171,8 +174,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        dessertTimer.stopTimer()
         Timber.i("onStop Called")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Timber.i("onSaveInstanceState Called")
     }
 
     override fun onDestroy() {
